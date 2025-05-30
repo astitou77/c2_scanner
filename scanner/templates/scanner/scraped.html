@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scraped C2 Threats</title>
+</head>
+<body>
+    <h1>Suspicious IPs & Malware</h1>
+    <table border="1">
+        <tr>
+            <th>Malware</th>
+            <th>URL</th>
+            <th>IP Address</th>
+            <th>First Seen</th>
+        </tr>
+        {% for threat in threats %}
+            <tr>
+                <td>{{ threat.malware_name }}</td>
+                <td><a href="{{ threat.url }}" target="_blank">{{ threat.url }}</a></td>
+                <td>{{ threat.ip_address }}</td>
+                <td>{{ threat.first_seen }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

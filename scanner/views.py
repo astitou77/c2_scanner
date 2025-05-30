@@ -4,7 +4,20 @@ from django.shortcuts import render
 
 from .forms import IPScanForm
 from .models import ScanResult
+
+from .models import SuspiciousIP  # items scaped from 'ViriBack C2 Tracker' 
+from django.http import JsonResponse
 import subprocess, requests
+
+def view_Scraped_C2_Threats(request):
+    # print('Displaying Threats Scraped from https://tracker.viriback.com/')
+    # entries = SuspiciousIP.objects.all().values("malware_name", "url", "ip_address", "first_seen")
+    
+    # return render(request, "scanner/scraped.html", context)
+    # return JsonResponse(list(entries), safe=False)
+    
+    threats = SuspiciousIP.objects.all()
+    return render(request, 'scanner/scraped.html', {'threats': threats})
 
 def check_threatfox(ip):
     url = "https://threatfox.abuse.ch/api/v1/"

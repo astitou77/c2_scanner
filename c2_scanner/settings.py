@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@rpn(jwp8*z$md*rt*txt^#4ni0ql=0zc)ar_1h(wbale7(hk(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['16.52.13.252', '*']
 
 
 # Application definition
