@@ -1,40 +1,40 @@
 <h1> Threat identification : Command & Control (C2) Servers </h1>
 
-0. Setup Django Project
-    ### Create a Python Virtual Environment
+## 0. Setup Django Project
+    <b> Create a Python Virtual Environment </b>
     python -m venv .venv </br>
     source .venv/bin/activate </br>
     pip install django requests </br>
 
-    ### start the 'c2_scanner' Django project
+    <b> start the 'c2_scanner' Django project </b>
     django-admin startproject c2_scanner </br>
     cd c2_scanner </br>
 
-    ### add the 'scanner' Django application
+    <b> add the 'scanner' Django application </b>
     python manage.py startapp scanner </br>
     ### under 'c2_scanner/settings.py', register the 'scanner' app in the 'c2_scanner' project
     INSTALLED_APPS = [ ..., 'scanner', ] </br>
 
-    ### under 'scanner/models.py:' Define the Django models (Database/Tables)
+    <b> under 'scanner/models.py:' Define the Django models (Database/Tables) </b>
     Table 'models.Model.<myTable>' - [ ex.: store IPs from Viriback C2 Tracker ] </br>
         &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.malware_name </br>
         &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.url </br>
         &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.ip_address </br>
         &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.first_seen </br>
-    ### migrate (update) the Django sqlite databases
+    <b> migrate (update) the Django sqlite databases </b>
     python manage.py makemigrations </br>
     python manage.py migrate </br>
 
-    ### under '/c2_scanner/urls.py' ---> '/scanner/urls.py' setup URL rootings
+    <b> under '/c2_scanner/urls.py' ---> '/scanner/urls.py' setup URL rootings </b>
     urlpatterns = [ path('', include('scanner.urls')), ] </br>
     urlpatterns = [ path('scraped/', view_BLAH_BLAH, name='scraped'), ] </br>
 
-    ### under 'scanner/views.py' setup the ***DJANGO MAGIC***
+    <b> under 'scanner/views.py' setup the ***DJANGO MAGIC*** </b>
     def view_BLAH_BLAH(request):  </br>
         &nbsp;&nbsp;&nbsp;&nbsp; threats = .models.<myTable>.objects.all() </br>
         &nbsp;&nbsp;&nbsp;&nbsp; return render(request, 'scanner/<scraped>.html', {'threatsss': threats})
 
-    ### under 'scanner/templates/scanner/<myTemplate>.html' create the HTML dynamic template page & display results
+    <b> under 'scanner/templates/scanner/<myTemplate>.html' create the webpage to display </b>
     {% for threat in threatsss %} </br>
         &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.malware_name }} </br>
         &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.url }} </br>
@@ -42,10 +42,10 @@
         &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.first_seen }} </br>
     {% endfor %}
 
-    ### Run the project
+    <b> Run the project </b>
     python manage.py runserver 0.0.0.0:8000     # start service ; Open ---> http://127.0.0.1:8000
 
-    ### Create Django Admin Console superuser
+    <b> Create Django Admin Console superuser </b>
     python manage.py createsuperuser            # adnane / I..1    |  Login --->  http://127.0.0.1:8000/admin
 
 
