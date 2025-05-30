@@ -2,44 +2,44 @@
 
 0. Setup Django Project
     ### Create a Python Virtual Environment
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install django requests
+    python -m venv .venv </br>
+    source .venv/bin/activate </br>
+    pip install django requests </br>
 
     ### start the 'c2_scanner' Django project
-    django-admin startproject c2_scanner
-    cd c2_scanner
+    django-admin startproject c2_scanner </br>
+    cd c2_scanner </br>
 
     ### add the 'scanner' Django application
-    python manage.py startapp scanner
+    python manage.py startapp scanner </br>
     ### under 'c2_scanner/settings.py', register the 'scanner' app in the 'c2_scanner' project
-    INSTALLED_APPS = [ ..., 'scanner', ]
+    INSTALLED_APPS = [ ..., 'scanner', ] </br>
 
     ### under 'scanner/models.py:' Define the Django models (Database/Tables)
-    Table 'models.Model.<myTable>' - [ ex.: store IPs from Viriback C2 Tracker ]
-        models.Model.<myTable>.malware_name
-        models.Model.<myTable>.url
-        models.Model.<myTable>.ip_address
-        models.Model.<myTable>.first_seen
+    Table 'models.Model.<myTable>' - [ ex.: store IPs from Viriback C2 Tracker ] </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.malware_name </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.url </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.ip_address </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; models.Model.<myTable>.first_seen </br>
     ### migrate (update) the Django sqlite databases
-    python manage.py makemigrations
-    python manage.py migrate
+    python manage.py makemigrations </br>
+    python manage.py migrate </br>
 
     ### under '/c2_scanner/urls.py' ---> '/scanner/urls.py' setup URL rootings
-    urlpatterns = [ path('', include('scanner.urls')), ]
-    urlpatterns = [ path('scraped/', view_BLAH_BLAH, name='scraped'), ]
+    urlpatterns = [ path('', include('scanner.urls')), ] </br>
+    urlpatterns = [ path('scraped/', view_BLAH_BLAH, name='scraped'), ] </br>
 
     ### under 'scanner/views.py' setup the ***DJANGO MAGIC***
-    def view_BLAH_BLAH(request): 
-        threats = .models.<myTable>.objects.all()
-        return render(request, 'scanner/<scraped>.html', {'threatsss': threats})
+    def view_BLAH_BLAH(request):  </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; threats = .models.<myTable>.objects.all() </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; return render(request, 'scanner/<scraped>.html', {'threatsss': threats})
 
     ### under 'scanner/templates/scanner/<myTemplate>.html' create the HTML dynamic template page & display results
-    {% for threat in threatsss %}
-        {{ threat.malware_name }}
-        {{ threat.url }}
-        {{ threat.ip_address }}
-        {{ threat.first_seen }}
+    {% for threat in threatsss %} </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.malware_name }} </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.url }} </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.ip_address }} </br>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ threat.first_seen }} </br>
     {% endfor %}
 
     ### Run the project
@@ -49,6 +49,10 @@
     python manage.py createsuperuser            # adnane / I..1    |  Login --->  http://127.0.0.1:8000/admin
 
 
+
+ </br> </br> </br> </br>
+
+ 
 1. Scrapy : scrape list of IPs/Ports
     1.0 Create 'SuspiciousIP' Table in models.py
             1.0.0 Migrate changes
