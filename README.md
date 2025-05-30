@@ -9,3 +9,6 @@
 
 ssh -i "/Users/adnane/Downloads/VM-Key-Mullvad_VPN.pem" ubuntu@15.157.114.18
 
+<h1> Running the app </h1>
+
+nohup python manage.py runserver 0.0.0.0:8000 &
