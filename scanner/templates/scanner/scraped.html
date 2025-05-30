@@ -2,24 +2,50 @@
 <html>
 <head>
     <title>Scraped C2 Threats</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Suspicious IPs & Malware</h1>
-    <table border="1">
-        <tr>
-            <th>Malware</th>
-            <th>URL</th>
-            <th>IP Address</th>
-            <th>First Seen</th>
-        </tr>
-        {% for threat in threats %}
-            <tr>
-                <td>{{ threat.malware_name }}</td>
-                <td><a href="{{ threat.url }}" target="_blank">{{ threat.url }}</a></td>
-                <td>{{ threat.ip_address }}</td>
-                <td>{{ threat.first_seen }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+
+    <div class="container mt-8">
+        <div class="table-responsive">
+        <!--table-striped → Alternating row colors.
+            table-bordered → Borders around cells.
+            table-hover → Highlight rows on hover.
+            table-dark → Dark-themed header.-->
+
+            <h1>Scanning...</h1>
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Flagged by</th>
+                        <th>Malware</th>
+                        <th>URL</th>
+                        <th>IP Address</th>
+                        <th>First Seen</th>
+                        <th>JA3</th>
+                        <th>JA4</th>
+                        <th>Threat Decision ?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for threat in threats %}
+                        <tr>
+                            <td>tracker.viriback.com</td>
+                            <td>{{ threat.malware_name }}</td>
+                            <td><a href="{{ threat.url }}" target="_blank">{{ threat.url }}</a></td>
+                            <td>{{ threat.ip_address }}</td>
+                            <td>{{ threat.first_seen }}</td>
+                            <td></td>
+                            <td></td>
+                            <td>BLOCK</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
 </body>
 </html>
