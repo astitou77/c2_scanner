@@ -1,0 +1,1 @@
+print("Hello C2 Scanner !")
