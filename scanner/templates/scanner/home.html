@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>C2 Scanner</title>
+</head>
+<body>
+  <h1>🔍 C2 Scanner Dashboard</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Scan IP</button>
+  </form>
+
+  {% if ip %}
+    <h2>Scan Result for {{ ip }}</h2>
+    <p><strong>ThreatFox:</strong> {{ is_threat|yesno:"⚠️ YES,✅ NO" }}</p>
+    <pre>{{ jarm_output }}</pre>
+  {% endif %}
+
+  <h3>🗃 Recent Results</h3>
+  <ul>
+    {% for result in results %}
+      <li>{{ result.timestamp }} - {{ result.ip }} - {{ result.is_threat|yesno:"⚠️,✅" }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
