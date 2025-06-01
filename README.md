@@ -1,4 +1,4 @@
-# 1. Command & Control (C2) Servers: Threat Identification !
+# 1. Command & Control (C2) Servers: Threat Identification!
 
 ## 1.1 What is C2 Servers ? 
 A command and control (C2) server is a central hub used by attackers to remotely control compromised systems after a cyberattack. It acts as the communication link between the attacker and the infected devices, allowing them to issue commands, collect data, and coordinate malicious activities. It is the "brain" of a cyberattack, directing the actions of malware on compromised machines. 
