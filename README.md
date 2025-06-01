@@ -1,4 +1,6 @@
-# Validate cyberthreat infrastructure | GW10 Guild 3 Team 4
+# (3.4) Validate Cyberthreat Infrastructure
+> GeekWeek10 Guild 3 Team 4
+
 As malicious actors change and relocate their infrastructure to avoid detection, we need to :
 * A. constantly verify that our data and **indicators of compromise (IoCs)** are still valid
 * B. regularly browse the Internet to validate existing information about malicious infrastructure
@@ -130,27 +132,27 @@ As malicious actors change and relocate their infrastructure to avoid detection,
 
 ## 2. Collect & Validate Lists of Known C2 Servers
 
-> 2.0 https://tracker.viriback.com
+> 2.0 [https://tracker.viriback.com](https://tracker.viriback.com/)
 ```bash
 > echo 'Malware	Url	IP	FirstSeen'
 ```
 
-> 2.1 Shodan.io
+> 2.1 [Shodan.io](https://www.shodan.io/dashboard)
 ```bash
 > echo ''
 ```
 
-> 2.2 Censys
+> 2.2 [Censys.com](https://go.censys.com/)
 ```bash
 > echo ''
 ```
 
-> 2.3 Recorded Future
+> 2.3 [RecordedFuture.com](https://app.recordedfuture.com/live/)
 ```bash
 > echo ''
 ```
 
-> 2.4 Recorded Future
+> 2.4 ????????
 ```bash
 > echo ''
 ```
@@ -160,8 +162,13 @@ As malicious actors change and relocate their infrastructure to avoid detection,
 
 Fingerprinting is a reliable way to identify Command & Control (C2) servers independent from the 'IP:Port' it uses against our infrastructure
 
-* JA3 : ????
-* JA4+ : ????
+3.1 JARM
+
+
+3.2 JA3 : ????
+
+
+3.3 JA4+ : ????
 
 > Zgrab2 : Scans Locally
 ```bash
@@ -177,21 +184,28 @@ Fingerprinting is a reliable way to identify Command & Control (C2) servers inde
 # 4. Demonstration
 
 * Containerize - Docker.io
-* Deploy to an AWS Virtual Machine (VM)
-      - ssh -i "/Users/adnane/Downloads/VM-Key-Mullvad_VPN.pem" ubuntu@15.157.114.18
 
+4.1 Create Java Tomcat weak web application
+      - Weak Credentials
+      - SQL injection
 
-Django Decision : Block / Allow
+4.2 Create 1st Fake AWS C2 threat
+      - Cracks app Fake Secret (ex.: 3.4 Confidential Detective Team Members)
+      - Gets copy of the Database | SQL injection
 
-- Create a fake C2 server VM in AWS |
-    - Site Admin declares threat  
-- Add fingerprint to Django DB manually ?
-- Run 2nd instance of the fake C2 VM on a separate IP address
-    - Check if the incoming fingerprint gets blocked by
-        - the VPN ??
+4.3 Register threat into our 'c2_scanner' database as a known threat
+
+4.2 Create 2nd Fake AWS C2 threat : Same Fingerprint, Different IP ?
+      - Get blocked ? By VPN ???? WAF ???
+      - Django Decision : Block / Allow
+
 
 # 5. Next Steps...
 
+Deploy to an AWS Virtual Machine (VM)
+      
+      - ssh -i "/Users/adnane/Downloads/VM-Key-Mullvad_VPN.pem" ubuntu@15.157.114.18
+  
 > ?????????
 ```bash
 > echo ''
