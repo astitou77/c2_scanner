@@ -32,3 +32,21 @@ for row in tbody.find_all("tr"):
 # Print the extracted data
 for entry in data_list:
     print(entry)
+
+
+from django.db import IntegrityError
+from scanner.models import SuspiciousIP
+
+for entry in data_list:
+    if not SuspiciousIP.objects.filter(malware_name=entry["malware_name"], ip_address=entry["ip_address"]).exists():
+        try:
+            SuspiciousIP.objects.create(
+                malware_name=entry["malware_name"],
+                url=entry["url"],
+                ip_address=entry["ip_address"],
+                first_seen=entry["first_seen"]
+            )
+        except IntegrityError:
+            print(f"Duplicate entry skipped: {entry}")
+
+
