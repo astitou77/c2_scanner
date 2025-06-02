@@ -7,9 +7,10 @@ class SuspiciousIP(models.Model):
     url = models.URLField()  # Malicious URLs associated with the malware
     ip_address = models.GenericIPAddressField()  # Suspicious IP address
     first_seen = models.DateTimeField()  # Date when the threat was first detected
+    jarm_hash = models.CharField(max_length=64, blank=True, null=True)  # New field for JARM hash
 
     def __str__(self):
-        return f"{self.malware_name} - {self.url} - {self.ip_address} - {self.first_seen}"
+        return f"{self.malware_name} - {self.url} - {self.ip_address} - {self.first_seen} - {self.jarm_hash}"
 
 
 ### 2. Results to be displayed for Suspicious IP:Port pairs will be stored in this Table:

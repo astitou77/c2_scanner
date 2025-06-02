@@ -12,8 +12,11 @@ from .scraper import save_to_database
 
 
 def suspicious_ips(request):
-    save_to_database()
+    # automatically trigger 'scraper.py' save_to_database() function
+    # save_to_database()
+    # get all IPs saved into the db
     ips = SuspiciousIP.objects.all()
+    # display them into our web Template to display
     return render(request, "scanner/suspicious_ips.html", {'ips': ips})
 
 

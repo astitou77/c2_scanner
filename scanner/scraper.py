@@ -19,25 +19,44 @@ def scrape_data():
         ip_address = cols[2].text.strip()
         first_seen = datetime.strptime(cols[3].text.strip(), "%d-%m-%Y")
 
+        print("ITEM -----> ", malware_name, ip_url, ip_address, first_seen)
+
         data_list.append({
             "malware_name": malware_name,
             "url": ip_url,
             "ip_address": ip_address,
             "first_seen": first_seen,
-            # "jarm_hash": generate_jarm_hash(ip_address)  # Function to compute hash
+            "jarm_hash": generate_jarm_hash(ip_address),
         })
-    
+
+        # generate_jarm_hash(ip_address)  # Function to compute hash
+
     return data_list
 
 def save_to_database():
     data_list = scrape_data()
     for entry in data_list:
-        if not SuspiciousIP.objects.filter(malware_name=entry["malware_name"], ip_address=entry["ip_address"]).exists():
+        print("ENTRY ---------> ", entry)
+        if not SuspiciousIP.objects.filter(jarm_hash=entry["jarm_hash"], ip_address=entry["ip_address"]).exists():
             try:
                 SuspiciousIP.objects.create(**entry)
             except IntegrityError:
                 print(f"Duplicate skipped: {entry}")
 
+
+import subprocess
+
 def generate_jarm_hash(ip):
-    """Mock function to compute a JARM fingerprint"""
-    return f"JARMMMSSDJDDDSDS"  # Replace with actual JARM computation
+    """Runs JARM on the given IP and returns only the fingerprint"""
+    try:
+        result = subprocess.run(["python3", "scanner/jarm/jarm.py", ip], capture_output=True, text=True)
+        output_lines = result.stdout.strip().split("\n")
+        for line in output_lines:
+            if line.startswith("JARM:"):
+                return line.split("JARM:")[1].strip()
+    except Exception as e:
+        print(f"Error generating JARM for {ip}: {e}")
+        return None
+
+
+
