@@ -8,10 +8,11 @@ from .models import ScanResult
 from .models import SuspiciousIP  # items scaped from 'ViriBack C2 Tracker' 
 from django.http import JsonResponse
 import subprocess, requests
-# from .scraper import run_scraper
+from .scraper import save_to_database
 
 
 def suspicious_ips(request):
+    save_to_database()
     ips = SuspiciousIP.objects.all()
     return render(request, "scanner/suspicious_ips.html", {'ips': ips})
 

@@ -24,7 +24,7 @@ def scrape_data():
             "url": ip_url,
             "ip_address": ip_address,
             "first_seen": first_seen,
-            "jarm_hash": generate_jarm_hash(ip_address)  # Function to compute hash
+            # "jarm_hash": generate_jarm_hash(ip_address)  # Function to compute hash
         })
     
     return data_list
