@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Suspicious IPs</title>
+</head>
+<body>
+    <h2>Suspicious IP List</h2>
+    <table border="1">
+        <tr>
+            <th>Malware Name</th>
+            <th>URL</th>
+            <th>IP Address</th>
+            <th>First Seen</th>
+            <th>JARM Hash</th>
+        </tr>
+        {% for ip in ips %}
+        <tr>
+            <td>{{ ip.malware_name }}</td>
+            <td><a href="{{ ip.url }}">{{ ip.url }}</a></td>
+            <td>{{ ip.ip_address }}</td>
+            <td>{{ ip.first_seen }}</td>
+            <td>{{ ip.jarm_hash }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

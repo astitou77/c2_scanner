@@ -8,21 +8,27 @@ from .models import ScanResult
 from .models import SuspiciousIP  # items scaped from 'ViriBack C2 Tracker' 
 from django.http import JsonResponse
 import subprocess, requests
-from .scraper import run_scraper
+# from .scraper import run_scraper
 
-def start_scraping(request):
-    run_scraper()
-    return JsonResponse({"status": "Scraping started"})
 
-def view_Scraped_C2_Threats(request):
+def suspicious_ips(request):
+    ips = SuspiciousIP.objects.all()
+    return render(request, "scanner/suspicious_ips.html", {'ips': ips})
+
+
+#def start_scraping(request):
+#    run_scraper()
+#    return JsonResponse({"status": "Scraping started"})
+
+#def view_Scraped_C2_Threats(request):
     # print('Displaying Threats Scraped from https://tracker.viriback.com/')
     # entries = SuspiciousIP.objects.all().values("malware_name", "url", "ip_address", "first_seen")
     
     # return render(request, "scanner/scraped.html", context)
     # return JsonResponse(list(entries), safe=False)
 
-    threats = SuspiciousIP.objects.all()
-    return render(request, 'scanner/scraped.html', {'threats': threats})
+#    threats = SuspiciousIP.objects.all()
+#    return render(request, 'scanner/scraped.html', {'threats': threats})
 
 def check_threatfox(ip):
     url = "https://threatfox.abuse.ch/api/v1/"
