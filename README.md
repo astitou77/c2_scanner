@@ -162,6 +162,76 @@ As malicious actors change and relocate their infrastructure to avoid detection,
 
 Fingerprinting is a reliable way to identify Command & Control (C2) servers independent from the 'IP:Port' it uses against our infrastructure
 
+> Using JA3-JA4 scanner
+```bash
+# Documentation: https://en.kali.tools/?p=1860
+> sudo apt update
+> sudo apt install tshark
+> wget -O ja3-ja4-scanner.sh https://kali.tools/files/scripts/ja3-ja4-scanner
+```
+
+> non-sudo tcpDump Packet Capture in Linux
+```bash
+sudo groupadd pcap  # Create the group if it doesn't exist
+sudo usermod -aG pcap $USER  # Add yourself to the group
+sudo chgrp pcap /usr/sbin/tcpdump  # Change the group ownership
+sudo chmod 750 /usr/sbin/tcpdump  # Give group execution permissions
+```
+
+> JA4 FINGERPRINT | PROOF OF CONCEPT
+> 1. tcpdump [record network traffic in a *.pcap file] 
+> 2. curl [ initiate SSL/TLS handshake(s) during traffic recording ]
+> 3. Wireshark [ analyze *.pcap traffic ]
+```bash
+# Install
+> sudo apt install wireshark
+> sudo apt install tshark
+# start Packet Capture (*.pcap log file)  ; use 'ip link show' to chek interface (ex.: 'enX0')
+> sudo tcpdump -i enX0 port 443 -w tls_capture.pcap
+# initiate SSL/TLS Handshake to an IP/Hostname/URL
+> curl -v --tlsv1.2 --connect-to microsoft.com:443 https://microsoft.com
+# Stop Packet capture
+> CTRL + C
+# Read the packet capture file
+> tshark -r tls_capture.pcap
+# Filter TLS handshakes captured
+> tshark -r tls_capture.pcap -Y "tls.handshake.type == 1"
+# Filter TLS handshakes captures - Verbose details
+> tshark -r tls_capture.pcap -Y "tls.handshake.type == 1" -V
+# [Failssss] EXTRACT 
+> tshark -r tls_capture.pcap -T fields -e ip.src -e ip.dst -e tls.handshake.type > tls_data.csv
+# [Workssss] Use the JA4+ Python Extractor
+> python3 ./ja4/python/ja4.py tls_capture.pcap
+```
+
+> JA4 Fingerprint in Django
+# Must have tcpdump installed
+```bash
+> source .venv/bin/activate
+> pip install django pandas pyshark celery
+> 
+```
+
+> Zeek install
+```bash
+# Documentation: https://docs.zeek.org/en/current/install.html
+> echo 'deb http://download.opensuse.org/repositories/security:/zeek/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/security:zeek.list
+> curl -fsSL https://download.opensuse.org/repositories/security:zeek/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
+> sudo apt update
+> sudo apt install zeek-6.0
+> vi ~/.profile
+
+>> export PATH=$PATH:/opt/zeek/bin
+
+> zeek --version
+```
+
+> Suricata install
+```bash
+> sudo apt install suricata -y
+> suricata -V
+```
+
 3.1 JARM
 
 
