@@ -39,12 +39,17 @@ def initiate_tls_handshake(ip, port=443):
         print(f"\t---> Failed TLS handshake ({ip}): {e}")
         return False
 
-from scanner.models import SuspiciousIP
-brah = ['google.com', 'facebook.com', 'youtube.com']
-for threat in brah: # SuspiciousIP.objects.all()   2.1 loop over each threat IP address
-    print('Initiate TLS Handshake with Threat IP\t...\t', threat) # threat.ip_address)
-    tls_results[threat] = initiate_tls_handshake(threat) # threat.ip_address)
 
+from scanner.models import SuspiciousIP
+brah = ['https://www.google.com', 'lapresse.ca', 'youtube.com']
+for threat in SuspiciousIP.objects.all():
+    domain = threat.malware_name # .ip_address
+    print(f"Attempting TLS handshake with {domain}...")
+    if initiate_tls_handshake(domain):
+        tls_results[domain] = True
+# for threat in brah: # SuspiciousIP.objects.all()   2.1 loop over each threat IP address
+#     print('Initiate TLS Handshake with Threat IP\t...\t', threat) # threat.ip_address)
+#     tls_results[threat] = initiate_tls_handshake(threat) # threat.ip_address)
 print('Handshakes completed...', tls_results)
 
 
@@ -54,7 +59,29 @@ os.killpg(os.getpgid(tcpdump_process.pid), signal.SIGTERM)
 print("Packet capture stopped.")
 
 
-# 4. Use ja4.py to extract JA4+ Signatures from *.pcap | for IP's that Successfully TLS Handshaked
+# 4. generate JARM fingerprint
+def generate_jarm_fingerprint(domain):
+    try:
+        result = subprocess.run(
+            ["python3", "./scanner/jarm/jarm.py", domain], 
+            capture_output=True, text=True, check=True
+        )
+        output_lines = result.stdout.split("\n")  # Split the output into lines
+
+        for line in output_lines:
+            if line.startswith("JARM:"):
+                return line.split(": ")[1].strip()  # Extract and return the hash
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error running jarm.py: {e}")
+        return None
+
+for item in SuspiciousIP.objects.all():
+    jarm_hash = generate_jarm_fingerprint(item.malware_name)
+    SuspiciousIP.objects.filter(malware_name=item.malware_name).update(jarm_hash = jarm_hash)
+    # item.jarm_hash = jarm_hash
+
+# 5. Use ja4.py to extract JA4+ Signatures from *.pcap | for IP's that Successfully TLS Handshaked
 import subprocess
 import json
 
@@ -86,11 +113,19 @@ fingerprint_data = generate_ja4_fingerprint(pcap_file)
 # print(fingerprint_data)
 
 # Loop through each fingerprint entry and update SuspiciousIP model
+# Update SuspiciousIP objects with JA4 hash
 for entry in fingerprint_data:
+    src_ip = entry.get('domain')
+    ja4_hash = entry.get('JA4S')
+
+    print(entry['src'], entry['domain'], entry['JA4.1'], entry['JA4_o.1'], entry['JA4_o.1'], entry['JA4S'])
 
     # src_ip = entry['src']
     # ja4_hash = entry['JA4.1']
 
-    print(entry['src'], entry['domain'], entry['JA4.1'], entry['JA4_o.1'], entry['JA4_o.1'], entry['JA4S'])
+    if src_ip in tls_results:
+        SuspiciousIP.objects.filter(malware_name=src_ip).update(ja4_hash=ja4_hash)
+        print(f"Updated {src_ip} with JA4 hash: {ja4_hash}")
 
+print("Script completed successfully!!!!!")
 

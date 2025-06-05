@@ -6,27 +6,42 @@
 </head>
 <body>
 
-    <div class="container mt-8">
+    <div class="container mt-4">
         <div class="table-responsive">
             <h2>Fingerprinting C2 Servers...</h2>
             <table  class="table table-striped table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>Malware</th>
-                        <th>URL</th>
+                        <th>Malware Domain</th>
+                        <th><a href="https://tracker.viriback.com/">URL</a></th>
                         <th>IP Address</th>
                         <th>First Seen</th>
-                        <th>JARM Hash</th>
+                        <th><a href="https://github.com/salesforce/jarm">JARM Hash</a></th>
+                        <th><a href="https://github.com/salesforce/ja3">JA3 Hash</a></th>
+                        <th><a href="https://github.com/FoxIO-LLC/ja4/tree/main#">JA4 Hash (JA4S)</a></th>
+                        <th>Decision</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for ip in ips %}
                     <tr>
                         <td>{{ ip.malware_name }}</td>
-                        <td><a href="{{ ip.url }}">{{ ip.url }}</a></td>
+
+                        <td class="text-wrap" style="word-break: break-all; max-width: 220px;">
+                            <a href="{{ ip.url }}">{{ ip.url }}</a>
+                        </td>
+                        
+                        
                         <td>{{ ip.ip_address }}</td>
                         <td>{{ ip.first_seen }}</td>
-                        <td>{{ ip.jarm_hash }}</td>
+
+                        <td class="text-wrap" style="word-break: break-all; max-width: 200px;">
+                            <span id="hashText">{{ ip.jarm_hash }}</span>
+                        </td>
+                        
+                        <td>{{ ip.ja3_hash }}</td>
+                        <td>{{ ip.ja4_hash }}</td>
+                        <td>{{ ip.c2_decision}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
