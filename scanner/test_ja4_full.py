@@ -15,7 +15,11 @@ import signal
 
 # 1. Start packet capture using tcpdump | generate *.pcap file
 tls_results = {}
-pcap_file = "pcap_fileeeezzzzzz.pcap"
+pcap_file = "pcap_filezzz.pcap"
+
+# Ensure the file is deleted before starting a new capture
+if os.path.exists(pcap_file):
+    os.remove(pcap_file)
 
 tcpdump_cmd = f"sudo tcpdump -i en0 tcp port 443 -w {pcap_file}"  # *** check README.md 'pcap' sudo permissions ***
 tcpdump_process = subprocess.Popen(tcpdump_cmd, shell=True, preexec_fn=os.setsid)
@@ -62,15 +66,31 @@ def generate_ja4_fingerprint(pcap_file):
         )
         
         # Attempt to parse output as JSON
+        # fixed_result = result.stdout.encode().decode("unicode_escape")  # Handle escape sequences
+        raw_output = result.stdout.strip().split("\n")  # Split by lines
+        fixed_result2 = "[" + ",".join(raw_output) + "]"  # Join with commas
+        fixed_result = fixed_result2.replace("'", '"').replace("}{", "},{")
+        
         try:
-            return json.loads(result.stdout)
+            print("\n GOOOD !!! \n")
+            return json.loads(fixed_result)
         except json.JSONDecodeError:
-            return result.stdout  # Return raw output if JSON parsing fails
+            print("\n BAAAAAD !! \n")
+            return fixed_result  # Return raw output if JSON parsing fails
 
     except subprocess.CalledProcessError as e:
         print(f"Error running ja4.py: {e}")
         return None
 
-generate_ja4_fingerprint(pcap_file)
+fingerprint_data = generate_ja4_fingerprint(pcap_file)
+# print(fingerprint_data)
+
+# Loop through each fingerprint entry and update SuspiciousIP model
+for entry in fingerprint_data:
+
+    # src_ip = entry['src']
+    # ja4_hash = entry['JA4.1']
+
+    print(entry['src'], entry['domain'], entry['JA4.1'], entry['JA4_o.1'], entry['JA4_o.1'], entry['JA4S'])
 
 
