@@ -7,6 +7,9 @@ As malicious actors change and relocate their infrastructure to avoid detection,
 * C. Could we build something similar to Shodan or Censys  ?
 * D. that could confirm command and control (C2) information for a specific malware family?
 
+TOOL:
+![Local Image](README_Screenshot.png)
+
 ## 1. Setup a Django (Python Web framework) Project
 
 > 1.0 Create the Project
