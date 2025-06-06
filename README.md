@@ -1,5 +1,5 @@
 # (3.4) Validate Cyberthreat Infrastructure
-> GeekWeek10 Guild 3 Team 4
+> GeekWeek10 Guild 3 Team 4 | Team Lead
 
 As malicious actors change and relocate their infrastructure to avoid detection, we need to :
 * A. constantly verify that our data and **indicators of compromise (IoCs)** are still valid
@@ -7,7 +7,7 @@ As malicious actors change and relocate their infrastructure to avoid detection,
 * C. Could we build something similar to Shodan or Censys  ?
 * D. that could confirm command and control (C2) information for a specific malware family?
 
-TOOL:
+## C2 Scanner | Fingerprint Tool
 ![Local Image](README_Screenshot.png)
 
 ## 1. Setup a Django (Python Web framework) Project
@@ -237,11 +237,9 @@ sudo chmod 750 /usr/sbin/tcpdump  # Give group execution permissions
 
 3.1 JARM
 
+3.2 JA3
 
-3.2 JA3 : ????
-
-
-3.3 JA4+ : ????
+3.3 JA4+
 
 > Zgrab2 : Scans Locally
 ```bash
@@ -275,11 +273,4 @@ sudo chmod 750 /usr/sbin/tcpdump  # Give group execution permissions
 
 # 5. Next Steps...
 
-Deploy to an AWS Virtual Machine (VM)
-      
-      - ssh -i "/Users/adnane/Downloads/VM-Key-Mullvad_VPN.pem" ubuntu@15.157.114.18
-  
-> ?????????
-```bash
-> echo ''
-```
+Improve TLS Handshake effectiveness against confirmed C2 servers...
